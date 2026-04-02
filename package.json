@@ -1,0 +1,11 @@
+{
+  "name": "interpreter-ts",
+  "module": "index.ts",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "type": "module",
+  "dependencies": {
+    "@typescript/native-preview": "7.0.0-dev.20260401.1"
+  }
+}
