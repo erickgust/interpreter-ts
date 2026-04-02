@@ -1,11 +1,16 @@
 {
   "name": "interpreter-ts",
-  "module": "index.ts",
-  "devDependencies": {
-    "@types/bun": "latest"
-  },
   "type": "module",
+  "module": "index.ts",
+  "scripts": {
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check"
+  },
   "dependencies": {
     "@typescript/native-preview": "7.0.0-dev.20260401.1"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "oxfmt": "0.43.0"
   }
 }
