@@ -5,7 +5,7 @@ export type Token = {
   literal: string;
 };
 
-export const token: Record<string, TokenType> = {
+export const token = {
   ILLEGAL: "ILLEGAL",
   EOF: "EOF",
   IDENT: "IDENT",
@@ -20,4 +20,4 @@ export const token: Record<string, TokenType> = {
   RBRACE: "}",
   FUNCTION: "FUNCTION",
   LET: "LET",
-};
+} satisfies Record<string, TokenType>;
