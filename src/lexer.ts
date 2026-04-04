@@ -96,6 +96,18 @@ export function getNextToken(l: Lexer): [Token, Lexer] {
       return [newToken(token.COMMA, currLexer.ch), readChar(currLexer)];
     case "+":
       return [newToken(token.PLUS, currLexer.ch), readChar(currLexer)];
+    case "-":
+      return [newToken(token.MINUS, currLexer.ch), readChar(currLexer)];
+    case "!":
+      return [newToken(token.BANG, currLexer.ch), readChar(currLexer)];
+    case "/":
+      return [newToken(token.SLASH, currLexer.ch), readChar(currLexer)];
+    case "*":
+      return [newToken(token.ASTERISK, currLexer.ch), readChar(currLexer)];
+    case "<":
+      return [newToken(token.LT, currLexer.ch), readChar(currLexer)];
+    case ">":
+      return [newToken(token.GT, currLexer.ch), readChar(currLexer)];
     case "{":
       return [newToken(token.LBRACE, currLexer.ch), readChar(currLexer)];
     case "}":
