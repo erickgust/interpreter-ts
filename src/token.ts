@@ -21,3 +21,12 @@ export const token = {
   FUNCTION: "FUNCTION",
   LET: "LET",
 } satisfies Record<string, TokenType>;
+
+const keywords: Record<string, TokenType> = {
+  fn: token.FUNCTION,
+  let: token.LET,
+};
+
+export const lookupIdent = (ident: string): TokenType => {
+  return keywords[ident] ?? token.IDENT;
+};
