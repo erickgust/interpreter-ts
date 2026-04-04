@@ -38,6 +38,14 @@ function readIdentifier(l: Lexer): [string, Lexer] {
   return [currentLexer.input.slice(position, currentLexer.position), currentLexer];
 }
 
+function peekChar(l: Lexer) {
+  if (l.readPosition >= l.input.length) {
+    return "\0";
+  }
+
+  return l.input[l.readPosition]!;
+}
+
 function readChar(l: Lexer): Lexer {
   const isEndOfFile = l.readPosition >= l.input.length;
 
@@ -85,6 +93,13 @@ export function getNextToken(l: Lexer): [Token, Lexer] {
   const currLexer = skipWhitespace(l);
   switch (currLexer.ch) {
     case "=":
+      if (peekChar(currLexer) === "=") {
+        const nextLexer = readChar(currLexer);
+        const literal = currLexer.ch + nextLexer.ch;
+        const tok = newToken(token.EQ, literal);
+
+        return [tok, readChar(nextLexer)];
+      }
       return [newToken(token.ASSIGN, currLexer.ch), readChar(currLexer)];
     case ";":
       return [newToken(token.SEMICOLON, currLexer.ch), readChar(currLexer)];
@@ -99,6 +114,13 @@ export function getNextToken(l: Lexer): [Token, Lexer] {
     case "-":
       return [newToken(token.MINUS, currLexer.ch), readChar(currLexer)];
     case "!":
+      if (peekChar(currLexer) === "=") {
+        const nextLexer = readChar(currLexer);
+        const literal = currLexer.ch + nextLexer.ch;
+        const tok = newToken(token.NOT_EQ, literal);
+
+        return [tok, readChar(nextLexer)];
+      }
       return [newToken(token.BANG, currLexer.ch), readChar(currLexer)];
     case "/":
       return [newToken(token.SLASH, currLexer.ch), readChar(currLexer)];

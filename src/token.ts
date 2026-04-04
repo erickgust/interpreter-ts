@@ -31,6 +31,8 @@ export const token = {
   IF: "IF",
   ELSE: "ELSE",
   RETURN: "RETURN",
+  EQ: "==",
+  NOT_EQ: "!=",
 } satisfies Record<string, TokenType>;
 
 const keywords: Record<string, TokenType> = {
