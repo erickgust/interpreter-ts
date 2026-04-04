@@ -22,6 +22,11 @@ function isLetter(ch: string): boolean {
   );
 }
 
+function isDigit(ch: string): boolean {
+  const charCode = ch.charCodeAt(0);
+  return charCode >= "0".charCodeAt(0) && charCode <= "9".charCodeAt(0);
+}
+
 function readIdentifier(l: Lexer): [string, Lexer] {
   const { position } = l;
 
@@ -46,6 +51,18 @@ function readChar(l: Lexer): Lexer {
     position,
     readPosition,
   };
+}
+
+function readNumber(l: Lexer): [string, Lexer] {
+  const { position } = l;
+
+  let currentLexer = l;
+
+  while (isDigit(currentLexer.ch)) {
+    currentLexer = readChar(currentLexer);
+  }
+
+  return [currentLexer.input.slice(position, currentLexer.position), currentLexer];
 }
 
 const skipWhitespace = (l: Lexer): Lexer => {
@@ -91,6 +108,10 @@ export function getNextToken(l: Lexer): [Token, Lexer] {
         const type = lookupIdent(literal);
 
         return [newToken(type, literal), lexer];
+      } else if (isDigit(currLexer.ch)) {
+        const [literal, lexer] = readNumber(currLexer);
+
+        return [newToken(token.INT, literal), lexer];
       }
 
       return [newToken(token.ILLEGAL, currLexer.ch), readChar(currLexer)];
