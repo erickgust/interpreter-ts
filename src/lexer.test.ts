@@ -3,7 +3,8 @@ import { token } from "./token";
 import { getNextToken, initLexer, type Lexer } from "./lexer";
 
 test("test getNextToken()", () => {
-  const input = `let five = 5;
+  const input = `
+    let five = 5;
     let ten = 10;
 
     let add = fn(x, y) {

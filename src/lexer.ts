@@ -48,37 +48,52 @@ function readChar(l: Lexer): Lexer {
   };
 }
 
+const skipWhitespace = (l: Lexer): Lexer => {
+  let currentLexer = l;
+  while (
+    currentLexer.ch === " " ||
+    currentLexer.ch === "\t" ||
+    currentLexer.ch === "\n" ||
+    currentLexer.ch === "\r"
+  ) {
+    currentLexer = readChar(currentLexer);
+  }
+
+  return currentLexer;
+};
+
 const newToken = (type: string, literal: string): Token => ({ type, literal });
 
 export function getNextToken(l: Lexer): [Token, Lexer] {
-  switch (l.ch) {
+  const currLexer = skipWhitespace(l);
+  switch (currLexer.ch) {
     case "=":
-      return [newToken(token.ASSIGN, l.ch), readChar(l)];
+      return [newToken(token.ASSIGN, currLexer.ch), readChar(currLexer)];
     case ";":
-      return [newToken(token.SEMICOLON, l.ch), readChar(l)];
+      return [newToken(token.SEMICOLON, currLexer.ch), readChar(currLexer)];
     case "(":
-      return [newToken(token.LPAREN, l.ch), readChar(l)];
+      return [newToken(token.LPAREN, currLexer.ch), readChar(currLexer)];
     case ")":
-      return [newToken(token.RPAREN, l.ch), readChar(l)];
+      return [newToken(token.RPAREN, currLexer.ch), readChar(currLexer)];
     case ",":
-      return [newToken(token.COMMA, l.ch), readChar(l)];
+      return [newToken(token.COMMA, currLexer.ch), readChar(currLexer)];
     case "+":
-      return [newToken(token.PLUS, l.ch), readChar(l)];
+      return [newToken(token.PLUS, currLexer.ch), readChar(currLexer)];
     case "{":
-      return [newToken(token.LBRACE, l.ch), readChar(l)];
+      return [newToken(token.LBRACE, currLexer.ch), readChar(currLexer)];
     case "}":
-      return [newToken(token.RBRACE, l.ch), readChar(l)];
+      return [newToken(token.RBRACE, currLexer.ch), readChar(currLexer)];
     case "\0":
-      return [newToken(token.EOF, ""), readChar(l)];
+      return [newToken(token.EOF, ""), readChar(currLexer)];
     default:
-      if (isLetter(l.ch)) {
-        const [literal, lexer] = readIdentifier(l);
+      if (isLetter(currLexer.ch)) {
+        const [literal, lexer] = readIdentifier(currLexer);
         const type = lookupIdent(literal);
 
         return [newToken(type, literal), lexer];
       }
 
-      return [newToken(token.ILLEGAL, l.ch), readChar(l)];
+      return [newToken(token.ILLEGAL, currLexer.ch), readChar(currLexer)];
   }
 }
 
