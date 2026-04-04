@@ -1,4 +1,4 @@
-import { token, type Token } from "./token";
+import { lookupIdent, token, type Token } from "./token";
 
 export type Lexer = {
   input: string;
@@ -6,6 +6,32 @@ export type Lexer = {
   readPosition: number;
   ch: string;
 };
+
+const asciiA = "a".charCodeAt(0);
+const asciiZ = "z".charCodeAt(0);
+const asciiCapitalA = "A".charCodeAt(0);
+const asciiCapitalZ = "Z".charCodeAt(0);
+
+function isLetter(ch: string): boolean {
+  const charCode = ch.charCodeAt(0);
+
+  return (
+    (charCode >= asciiA && charCode <= asciiZ) ||
+    (charCode >= asciiCapitalA && charCode <= asciiCapitalZ) ||
+    ch === "_"
+  );
+}
+
+function readIdentifier(l: Lexer): [string, Lexer] {
+  const { position } = l;
+
+  let currentLexer = l;
+  while (isLetter(currentLexer.ch)) {
+    currentLexer = readChar(currentLexer);
+  }
+
+  return [currentLexer.input.slice(position, currentLexer.position), currentLexer];
+}
 
 function readChar(l: Lexer): Lexer {
   const isEndOfFile = l.readPosition >= l.input.length;
@@ -45,6 +71,13 @@ export function getNextToken(l: Lexer): [Token, Lexer] {
     case "\0":
       return [newToken(token.EOF, ""), readChar(l)];
     default:
+      if (isLetter(l.ch)) {
+        const [literal, lexer] = readIdentifier(l);
+        const type = lookupIdent(literal);
+
+        return [newToken(type, literal), lexer];
+      }
+
       return [newToken(token.ILLEGAL, l.ch), readChar(l)];
   }
 }
