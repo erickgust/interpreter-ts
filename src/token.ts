@@ -26,11 +26,21 @@ export const token = {
   RBRACE: "}",
   FUNCTION: "FUNCTION",
   LET: "LET",
+  TRUE: "TRUE",
+  FALSE: "FALSE",
+  IF: "IF",
+  ELSE: "ELSE",
+  RETURN: "RETURN",
 } satisfies Record<string, TokenType>;
 
 const keywords: Record<string, TokenType> = {
   fn: token.FUNCTION,
   let: token.LET,
+  true: token.TRUE,
+  false: token.FALSE,
+  if: token.IF,
+  else: token.ELSE,
+  return: token.RETURN,
 };
 
 export const lookupIdent = (ident: string): TokenType => {
