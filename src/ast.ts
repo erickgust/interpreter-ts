@@ -1,3 +1,5 @@
+import type { Token } from "./token";
+
 type Node = {
   tokenLiteral(): string;
 };
@@ -14,10 +16,27 @@ type Program = {
   statements: Statement[];
 };
 
-function tokenLiteral(p: Program): string {
-  if (p.statements.length > 0) {
-    return p.statements[0]!.tokenLiteral();
-  }
+type Identifier = {
+  token: Token;
+  value: string;
+};
 
-  return "";
+type LetStatement = {
+  token: Token;
+  name: Identifier;
+  value: Expression;
+};
+
+function tokenLiteral(ls: LetStatement): string {
+  return ls.token.literal;
 }
+
+function statementNode(): void {
+  return;
+}
+
+function expressionNode(): void {
+  return;
+}
+
+export type { Node, Statement, Expression, Program, Identifier, LetStatement };
